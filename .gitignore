@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Unit test / coverage reports
+.coverage
+.coverage.*
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Environments
+.env
+local.env
+
+# VS code
+.vscode
+
+# PyCharm
+.idea
+
+# Volumes
+data/
+
+# Mac
+.DS_Store
+
+# Sqlite
+*.sqlite3
+
+# Log files
+*log
+
+# Dgango
+.pyc/
+.djcache/
+__pycache__/
+django_cache/
+
+# txt
+*.txt
+search_file/
