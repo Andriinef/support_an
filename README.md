@@ -66,7 +66,7 @@ django-debug-toolbar
 
 # https://pypi.org/project/django-ckeditor/
 django-ckeditor
-
+```
 
 ## Creates a Django project
 
