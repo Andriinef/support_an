@@ -66,6 +66,9 @@ django-debug-toolbar
 
 # https://pypi.org/project/django-ckeditor/
 django-ckeditor
+
+# https://pypi.org/project/python-dotenv/
+python-dotenv
 ```
 
 ## Creates a Django project
