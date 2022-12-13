@@ -19,6 +19,11 @@ from dotenv import load_dotenv
 # https://pypi.org/project/python-dotenv/
 load_dotenv()
 
+# User Accounts
+AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
+LOGIN_REDIRECT_URL = "registration_home"  # Log In
+LOGOUT_REDIRECT_URL = "registration_home"  # Log Out
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -30,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG")
 
 ALLOWED_HOSTS = ["*"]
 
@@ -44,7 +49,11 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # 3rd Party
+    "crispy_forms",  # new
+    # Local
     "support.apps.SupportConfig",  # new apps
+    "accounts.apps.AccountsConfig",  # accounts apps
 ]
 
 MIDDLEWARE = [
@@ -62,7 +71,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,7 +96,7 @@ DATABASES = {
     #     "NAME": BASE_DIR / "db.sqlite3",
     # }
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "ENGINE": os.getenv("DB_ENGINE"),
         "HOST": os.getenv("DB_HOST"),
         "NAME": os.getenv("DB_NAME"),
         "USER": os.getenv("DB_USER"),
@@ -147,3 +156,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# email
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL")
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_PASS")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS")
