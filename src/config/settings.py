@@ -1,4 +1,4 @@
-from os import getenv, path
+from os import getenv
 from pathlib import Path
 
 # from dotenv import load_dotenv
@@ -136,15 +136,15 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-MEDIA_URL = "/media/"
-
 if DEBUG:
-    STATICFILES_DIRS = [path.join(ROOT_DIR, "static")]
+    STATICFILES_DIRS = [ROOT_DIR / "static"]
 
 else:
-    STATIC_ROOT = path.join(ROOT_DIR, "static")
+    STATIC_ROOT = ROOT_DIR / "staticfiles"
 
-MEDIA_ROOT = path.join(ROOT_DIR, "media")
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = ROOT_DIR / "media"
 
 
 # email
