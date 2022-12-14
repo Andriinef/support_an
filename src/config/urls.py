@@ -1,28 +1,30 @@
-"""config URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/4.1/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
+from dataclasses import dataclass, asdict
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.static import serve
+from django.http import HttpResponse
+import json
+
+
+@dataclass
+class Person:
+    name: str
+    age: int
+
+
+def get_base(self):
+    user_1 = Person(name="Andrii", age=45)
+    content = json.dumps(asdict(user_1))
+    content_type = "application/json"
+    return HttpResponse(content, content_type=content_type)
+
 
 urlpatterns = [
+    path("base/", get_base),
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),
-    path("", include("support.urls")),  # support
     re_path(r"^images/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
+    path("", include("support.urls")),  # support
 ]
