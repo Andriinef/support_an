@@ -1,10 +1,11 @@
-from dataclasses import dataclass, asdict
+import json
+from dataclasses import asdict, dataclass
+
 from django.conf import settings
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import include, path, re_path
 from django.views.static import serve
-from django.http import HttpResponse
-import json
 
 
 @dataclass

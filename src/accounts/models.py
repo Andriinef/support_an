@@ -8,5 +8,5 @@ class CustomUser(AbstractUser):
     )
 
     class Meta:
-        verbose_name = 'Акаунт'
-        verbose_name_plural = 'Акаунти'
+        verbose_name = "Акаунт"
+        verbose_name_plural = "Акаунти"
