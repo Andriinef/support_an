@@ -59,7 +59,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [ROOT_DIR / "templates"],
+        "DIRS": [ROOT_DIR / "src/templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -78,7 +78,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # DataROOT
 # https://docs.djangoproject.com/en/4.1/ref/settings/#dataROOTs
 
-DATAROOTS = {
+DATABASES = {
     # "default": {
     #     "ENGINE": "django.db.backends.sqlite3",
     #     "NAME": ROOT_DIR / "db.sqlite3",
@@ -136,15 +136,13 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-if DEBUG:
-    STATICFILES_DIRS = [ROOT_DIR / "static"]
+STATICFILES_DIRS = [ROOT_DIR / "src/static"]
 
-else:
-    STATIC_ROOT = ROOT_DIR / "staticfiles"
+STATIC_ROOT = ROOT_DIR / "src/staticfiles"
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = ROOT_DIR / "media"
+MEDIA_ROOT = ROOT_DIR / "src/media"
 
 
 # email
