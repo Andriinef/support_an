@@ -1,11 +1,6 @@
 from os import getenv
 from pathlib import Path
 
-# from dotenv import load_dotenv
-# Loading ENV
-# https://pypi.org/project/python-dotenv/
-# load_dotenv()
-
 
 # User Accounts
 AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
@@ -40,7 +35,7 @@ INSTALLED_APPS = [
     # 3rd Party
     "crispy_forms",  # new
     # Local
-    "support.apps.SupportConfig",  # new apps
+    "exchange_rates.apps.ExchangeRatesConfig",  # new apps
     "accounts.apps.AccountsConfig",  # accounts apps
 ]
 
@@ -48,7 +43,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -154,3 +149,9 @@ EMAIL_PORT = getenv("EMAIL_PORT")
 EMAIL_HOST_USER = getenv("EMAIL_USER")
 EMAIL_HOST_PASSWORD = getenv("EMAIL_PASS")
 EMAIL_USE_TLS = getenv("EMAIL_USE_TLS")
+
+
+# Exchange rates service (Alpha Vantage)
+# https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
+ALPHA_VANTAGE_BASE_URL = getenv("ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co")
+ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")

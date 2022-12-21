@@ -100,3 +100,26 @@ Run the following commands:
 ```bash
 python src/manage.py runserver
 ```
+
+## Creates a Django apps
+
+Creates a Django apps
+
+```bash
+django-admin startapp exchange_rates
+```
+
+Open up config/settings.py
+
+```bash
+INSTALLED_APPS = [
+"django.contrib.admin",
+"django.contrib.auth",
+"django.contrib.contenttypes",
+"django.contrib.sessions",
+"django.contrib.messages",
+"django.contrib.staticfiles",
+# Local
+"exchange_rates.apps.ExchangeRatesConfig", # new
+]
+```
