@@ -1,7 +1,6 @@
 from os import getenv
 from pathlib import Path
 
-
 # User Accounts
 AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
 LOGIN_REDIRECT_URL = "registration_home"  # Log In
@@ -153,5 +152,7 @@ EMAIL_USE_TLS = getenv("EMAIL_USE_TLS")
 
 # Exchange rates service (Alpha Vantage)
 # https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
-ALPHA_VANTAGE_BASE_URL = getenv("ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co")
+ALPHA_VANTAGE_BASE_URL = getenv(
+    "ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co"
+)
 ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")

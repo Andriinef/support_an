@@ -1,17 +1,14 @@
 import json
+
 from django.http import JsonResponse
-from exchange_rates.services import (
-    AlphavantageResponse,
-    PriceClient,
-)
+
+from exchange_rates.services import AlphavantageResponse, PriceClient
 
 
 def get_price(request):
     client = PriceClient()
     return JsonResponse(
-        AlphavantageResponse(
-            **client.get_user_currency("USD", "UAH")
-        ).dict()
+        AlphavantageResponse(**client.get_user_currency("USD", "UAH")).dict()
     )
 
 
