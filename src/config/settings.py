@@ -32,10 +32,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # 3rd Party
-    "crispy_forms",  # new
+    "crispy_forms",  # new forms
     # Local
     "exchange_rates.apps.ExchangeRatesConfig",  # new apps
     "accounts.apps.AccountsConfig",  # accounts apps
+    "users.apps.UsersConfig",  # users apps
+    "repairs.apps.RepairsConfig",  # repairs apps
 ]
 
 MIDDLEWARE = [

@@ -1,3 +1,4 @@
+import pydantic
 import requests
 from django.conf import settings
 from pydantic import BaseModel, Field
@@ -13,10 +14,15 @@ class AlphavantageResponse(BaseModel):
     results: ExchangeRatesResults = Field(alias="Realtime Currency Exchange Rate")
 
 
-class PriceClient:
-    def _get(self, url, params):
+class ExchangeRatesInternalRequest(BaseModel):
+    from_: str = pydantic.Field(alias="from")
+    to: str
+
+
+class AlphavantageClient:
+    def _get(self, query, params):
         return requests.get(
-            f"{settings.ALPHA_VANTAGE_BASE_URL}/{url}",
+            f"{settings.ALPHA_VANTAGE_BASE_URL}/{query}",
             params={
                 "apikey": settings.ALPHA_VANTAGE_API_KEY,
                 **params,
