@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from repairs.models.car import Car
 from repairs.models.parts import Parts
 from repairs.models.places import PlacesToWork

@@ -2,7 +2,8 @@ from os import getenv
 from pathlib import Path
 
 # User Accounts
-AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
+# AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
+AUTH_USER_MODEL = "customusers.User"  # New custom user
 LOGIN_REDIRECT_URL = "registration_home"  # Log In
 LOGOUT_REDIRECT_URL = "registration_home"  # Log Out
 
@@ -35,9 +36,10 @@ INSTALLED_APPS = [
     "crispy_forms",  # new forms
     # Local
     "exchange_rates.apps.ExchangeRatesConfig",  # new apps
-    "accounts.apps.AccountsConfig",  # accounts apps
-    "users.apps.UsersConfig",  # users apps
-    "repairs.apps.RepairsConfig",  # repairs apps
+    # "accounts.apps.AccountsConfig",  # accounts apps
+    # "users.apps.UsersConfig",  # users apps
+    "customusers.apps.CustomUsersConfig",
+    # "repairs.apps.RepairsConfig",  # repairs apps
 ]
 
 MIDDLEWARE = [
