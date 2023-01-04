@@ -4,8 +4,8 @@ from pathlib import Path
 # User Accounts
 # AUTH_USER_MODEL = "accounts.CustomUser"  # New custom user
 AUTH_USER_MODEL = "customusers.User"  # New custom user
-LOGIN_REDIRECT_URL = "registration_home"  # Log In
-LOGOUT_REDIRECT_URL = "registration_home"  # Log Out
+# LOGIN_REDIRECT_URL = "registration_home"  # Log In
+# LOGOUT_REDIRECT_URL = "registration_home"  # Log Out
 
 # Build paths inside the project like this: ROOT_DIR / 'subdir'.
 SRC_DIR = Path(__file__).resolve().parent.parent
@@ -21,26 +21,31 @@ SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="").split(",")
-
+ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="localhost").split(",")
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    # 3rd Party
-    "crispy_forms",  # new forms
-    # Local
-    "exchange_rates.apps.ExchangeRatesConfig",  # new apps
-    # "accounts.apps.AccountsConfig",  # accounts apps
-    # "users.apps.UsersConfig",  # users apps
-    "customusers.apps.CustomUsersConfig",
-    # "repairs.apps.RepairsConfig",  # repairs apps
 ]
+
+LOCAL_APPS = [
+    # "accounts.apps.AccountsConfig",
+    # "repairs.apps.RepairsConfig",
+    # "users.apps.UsersConfig",
+    "customusers.apps.CustomUsersConfig",
+    "exchange_rates.apps.ExchangeRatesConfig",
+    "tickets",
+    "core",
+    "comments",
+    "shared",
+]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
