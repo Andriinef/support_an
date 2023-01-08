@@ -21,7 +21,7 @@ SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="localhost").split(",")
+ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS").split(", ")
 # Application definition
 
 DJANGO_APPS = [
