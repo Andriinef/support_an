@@ -11,6 +11,7 @@ django-debug-toolbar = "~=3.8.1"
 django-crispy-forms = "~=1.14.0"
 requests = "~=2.28.1"
 pydantic = "~=1.10.2"
+djangorestframework = "~=3.14.0"
 
 
 [dev-packages]

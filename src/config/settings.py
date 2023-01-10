@@ -34,6 +34,7 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
+    "rest_framework",
     # "accounts.apps.AccountsConfig",
     # "repairs.apps.RepairsConfig",
     # "users.apps.UsersConfig",
