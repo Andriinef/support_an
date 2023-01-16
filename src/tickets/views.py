@@ -1,5 +1,4 @@
-from rest_framework.generics import (ListAPIView, ListCreateAPIView,
-                                     RetrieveAPIView)
+from rest_framework.generics import ListAPIView, ListCreateAPIView, RetrieveAPIView
 
 from tickets.models import Ticket
 from tickets.serializers import TicketModelSerializer
