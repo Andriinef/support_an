@@ -3,7 +3,7 @@ from rest_framework import serializers
 from tickets.models import Ticket
 
 
-class TicketSerializer(serializers.ModelSerializer):
+class TicketModelSerializer(serializers.ModelSerializer):
     customer = serializers.SlugRelatedField(slug_field="email", read_only=True)
     manager = serializers.SlugRelatedField(slug_field="email", read_only=True)
 

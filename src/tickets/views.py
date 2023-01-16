@@ -1,14 +1,25 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.generics import (ListAPIView, ListCreateAPIView,
+                                     RetrieveAPIView)
 
 from tickets.models import Ticket
-from tickets.serializers import TicketSerializer
+from tickets.serializers import TicketModelSerializer
 
 
-class TicketsGet(ListAPIView):
+class TicketsListAPIView(ListAPIView):
+    """Відображення спіска ticket"""
+
     queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = TicketModelSerializer
 
 
 class TicketRetrieveAPIView(RetrieveAPIView):
+    """Відображення одного ticket вказанного по id(pk)"""
+
     queryset = Ticket.objects.all()
-    serializer_class = TicketSerializer
+    serializer_class = TicketModelSerializer
+    lookup_field = "id"
+
+
+class TicketListCreateAPIView(ListCreateAPIView):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketModelSerializer

@@ -1,8 +1,8 @@
 from django.urls import path
 
-from comments.views import CommentsGet, CommentsRetrieveAPIView
+from comments.views import CommentsListAPIView, CommentsRetrieveAPIView
 
 urlpatterns = [
-    path("", CommentsGet.as_view()),
+    path("", CommentsListAPIView.as_view()),
     path("<int:pk>/", CommentsRetrieveAPIView.as_view()),
 ]

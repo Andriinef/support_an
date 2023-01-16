@@ -33,8 +33,11 @@ DJANGO_APPS = [
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = [
+THIRD_PARTY_APPS = [
     "rest_framework",
+]
+
+LOCAL_APPS = [
     # "accounts.apps.AccountsConfig",
     # "repairs.apps.RepairsConfig",
     # "users.apps.UsersConfig",
@@ -46,7 +49,7 @@ LOCAL_APPS = [
     "shared",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -140,24 +143,24 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-STATICFILES_DIRS = [ROOT_DIR / "src/static"]
+# STATICFILES_DIRS = [ROOT_DIR / "src/static"]
 
-STATIC_ROOT = ROOT_DIR / "src/staticfiles"
+# STATIC_ROOT = ROOT_DIR / "src/staticfiles"
 
 MEDIA_URL = "/media/"
 
-MEDIA_ROOT = ROOT_DIR / "src/media"
+# MEDIA_ROOT = ROOT_DIR / "src/media"
 
 
 # email
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
-EMAIL_HOST = getenv("EMAIL_HOST")
-EMAIL_PORT = getenv("EMAIL_PORT")
-EMAIL_HOST_USER = getenv("EMAIL_USER")
-EMAIL_HOST_PASSWORD = getenv("EMAIL_PASS")
-EMAIL_USE_TLS = getenv("EMAIL_USE_TLS")
+# DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
+# EMAIL_HOST = getenv("EMAIL_HOST")
+# EMAIL_PORT = getenv("EMAIL_PORT")
+# EMAIL_HOST_USER = getenv("EMAIL_USER")
+# EMAIL_HOST_PASSWORD = getenv("EMAIL_PASS")
+# EMAIL_USE_TLS = getenv("EMAIL_USE_TLS")
 
 
 # Exchange rates service (Alpha Vantage)
