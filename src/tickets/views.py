@@ -1,7 +1,17 @@
+from django.http import JsonResponse
 from rest_framework import generics
+from rest_framework.decorators import api_view
 
 from tickets.models import Ticket
-from tickets.serializers import TicketModelSerializer
+from tickets.serializers import TicketCreateSerializer, TicketModelSerializer
+
+
+@api_view(["POST"])
+def create_ticket(request) -> JsonResponse:
+    serializer = TicketCreateSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+    Ticket.objects.create(**serializer.validated_data)
+    return JsonResponse(serializer.validated_data)
 
 
 class TicketsListAPIView(generics.ListAPIView):
@@ -16,7 +26,7 @@ class TicketRetrieveAPIView(generics.RetrieveAPIView):
 
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
-    lookup_field = "id"
+    lookup_field = "slug"
 
 
 class TicketListCreateAPIView(generics.ListCreateAPIView):

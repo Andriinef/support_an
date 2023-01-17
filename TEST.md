@@ -11,3 +11,7 @@ isort .
 ```python
 flake8
 ```
+
+```python
+black --check . && isort --check .
+```

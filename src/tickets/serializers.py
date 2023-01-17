@@ -11,3 +11,9 @@ class TicketModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
         # exclude = ("id",)
         model = Ticket
+
+
+class TicketCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = ["header", "body", "slug"]
+        model = Ticket

@@ -4,7 +4,8 @@ from tickets.models import Ticket
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_display = ("__add__",)
+    list_display = ("customer", "manager", "header", "slug", "body")
+    prepopulated_fields = {"slug": ("header",)}
 
 
-admin.site.register(Ticket)
+admin.site.register(Ticket, TicketAdmin)
