@@ -37,6 +37,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
 ]
 
+
 LOCAL_APPS = [
     # "accounts.apps.AccountsConfig",
     # "repairs.apps.RepairsConfig",
@@ -49,7 +50,19 @@ LOCAL_APPS = [
     "shared",
 ]
 
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+REST_FRAMEWORK_AUTHENTICATION = [
+    "django.contrib.sites",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
+]
+
+INSTALLED_APPS = (
+    DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + REST_FRAMEWORK_AUTHENTICATION
+)
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -74,6 +87,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",  # new
             ],
         },
     },
@@ -154,7 +168,8 @@ MEDIA_URL = "/media/"
 
 # email
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+SITE_ID = 1
 # DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 # EMAIL_HOST = getenv("EMAIL_HOST")
 # EMAIL_PORT = getenv("EMAIL_PORT")
@@ -169,3 +184,15 @@ ALPHA_VANTAGE_BASE_URL = getenv(
     "ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co"
 )
 ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")
+
+# User Authentication
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+}

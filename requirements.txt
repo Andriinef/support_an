@@ -48,3 +48,5 @@ traitlets==5.8.1
 typing_extensions==4.4.0
 urllib3==1.26.13
 wcwidth==0.2.5
+dj-rest-auth==2.1.11
+django-allauth==0.48.0

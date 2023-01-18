@@ -15,16 +15,16 @@ def create_ticket(request) -> JsonResponse:
     return JsonResponse(serializer.validated_data)
 
 
-class TicketCreateAPIView(generics.CreateAPIView):
-    queryset = Ticket.objects.all()
-    serializer_class = TicketModelSerializer
-
-
 class TicketsListAPIView(generics.ListAPIView):
     """Відображення спіска ticket"""
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
+
+
+class TicketCreateAPIView(generics.CreateAPIView):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketModelSerializer
 
 
 class TicketRetrieveAPIView(generics.RetrieveAPIView):
