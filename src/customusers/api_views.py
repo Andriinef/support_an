@@ -1,0 +1,10 @@
+from django.contrib.auth import get_user_model
+from rest_framework.generics import CreateAPIView
+
+from customusers.serializers import UserRegistrationSerializer
+
+User = get_user_model()
+
+
+class UserCreateAPIView(CreateAPIView):
+    serializer_class = UserRegistrationSerializer

@@ -1,12 +1,11 @@
-from rest_framework.serializers import (CurrentUserDefault, HiddenField,
-                                        ModelSerializer, SlugRelatedField)
+from rest_framework import serializers
 
 from tickets.models import Ticket
 
 
-class TicketSerializer(ModelSerializer):
-    customer = SlugRelatedField(slug_field="email", read_only=True)
-    manager = SlugRelatedField(slug_field="email", read_only=True)
+class TicketSerializer(serializers.ModelSerializer):
+    customer = serializers.SlugRelatedField(slug_field="email", read_only=True)
+    manager = serializers.SlugRelatedField(slug_field="email", read_only=True)
 
     class Meta:
         fields = "__all__"
@@ -14,8 +13,9 @@ class TicketSerializer(ModelSerializer):
         model = Ticket
 
 
-class TicketModelSerializer(ModelSerializer):
-    customer = HiddenField(default=CurrentUserDefault())
+class TicketModelSerializer(serializers.ModelSerializer):
+    customer = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    # manager = serializers.SlugRelatedField(slug_field="email", read_only=True)
 
     class Meta:
         fields = ["customer", "manager", "header", "body", "slug"]

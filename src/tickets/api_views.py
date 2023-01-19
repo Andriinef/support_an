@@ -1,6 +1,9 @@
 from django.http import JsonResponse
-from rest_framework import generics
 from rest_framework.decorators import api_view
+from rest_framework.generics import (CreateAPIView, ListAPIView,
+                                     ListCreateAPIView, RetrieveAPIView,
+                                     RetrieveDestroyAPIView,
+                                     RetrieveUpdateAPIView)
 from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
 
 from tickets.models import Ticket
@@ -15,19 +18,19 @@ def create_ticket(request) -> JsonResponse:
     return JsonResponse(serializer.validated_data)
 
 
-class TicketsListAPIView(generics.ListAPIView):
+class TicketsListAPIView(ListAPIView):
     """Відображення спіска ticket"""
 
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
 
-class TicketCreateAPIView(generics.CreateAPIView):
+class TicketCreateAPIView(CreateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
 
 
-class TicketRetrieveAPIView(generics.RetrieveAPIView):
+class TicketRetrieveAPIView(RetrieveAPIView):
     """Відображення одного ticket вказанного по id(pk)"""
 
     queryset = Ticket.objects.all()
@@ -36,21 +39,21 @@ class TicketRetrieveAPIView(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
-class TicketListCreateAPIView(generics.ListCreateAPIView):
+class TicketListCreateAPIView(ListCreateAPIView):
     """Читання та створення спіска ticket"""
 
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
 
 
-class TicketRetrieveUpdateAPIView(generics.RetrieveUpdateAPIView):
+class TicketRetrieveUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
     lookup_field = "slug"
     permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
-class TicketRetrieveDestroyAPIView(generics.RetrieveDestroyAPIView):
+class TicketRetrieveDestroyAPIView(RetrieveDestroyAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
     lookup_field = "slug"

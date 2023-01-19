@@ -15,6 +15,25 @@ class UserAdmin(admin.ModelAdmin):
         "is_staff",
         "is_active",
     ]
-    list_display = ["email", "first_name", "last_name", "role", "is_active"]
-    list_filter = ["role", "is_active"]
-    search_fields = ["email", "first_name", "last_name", "role"]
+    list_display = [
+        "email",
+        "first_name",
+        "role",
+        "is_superuser",
+        "is_staff",
+        "is_active",
+    ]
+    list_filter = [
+        "role",
+        "is_superuser",
+        "is_staff",
+        "is_active",
+    ]
+    search_fields = [
+        "email",
+        "first_name",
+        "role",
+        "is_superuser",
+        "is_staff",
+        "is_active",
+    ]
