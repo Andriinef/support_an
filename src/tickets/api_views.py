@@ -4,7 +4,8 @@ from rest_framework.generics import (CreateAPIView, ListAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
                                      RetrieveDestroyAPIView,
                                      RetrieveUpdateAPIView)
-from rest_framework.permissions import IsAdminUser, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import (IsAdminUser, IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 
 from tickets.models import Ticket
 from tickets.serializers import TicketModelSerializer, TicketSerializer
@@ -24,19 +25,26 @@ class TicketsListAPIView(ListAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketSerializer
 
+    """ Дозволяє аутентифікованим користувачам виконувати будь-яку дію,
+     а неаутентифікованим – лише GET """
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
 
 class TicketCreateAPIView(CreateAPIView):
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class TicketRetrieveAPIView(RetrieveAPIView):
-    """Відображення одного ticket вказанного по id(pk)"""
+    """Забезпечуює доступ до інформації про окремий
+    об'єкт"""
 
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
     lookup_field = "slug"
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    """ Дозволяє аутентифікованим користувачам виконувати будь-яку дію """
+    permission_classes = (IsAuthenticated,)
 
 
 class TicketListCreateAPIView(ListCreateAPIView):
@@ -44,9 +52,13 @@ class TicketListCreateAPIView(ListCreateAPIView):
 
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
 class TicketRetrieveUpdateAPIView(RetrieveUpdateAPIView):
+    """Забезпечуює доступ до інформації про окремий
+    об'єкт та дозволяє його оновлювати"""
+
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
     lookup_field = "slug"
@@ -54,7 +66,12 @@ class TicketRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
 
 class TicketRetrieveDestroyAPIView(RetrieveDestroyAPIView):
+    """Забезпечуює доступ до інформації про окремий
+    об'єкт та дозволяє його видилити"""
+
     queryset = Ticket.objects.all()
     serializer_class = TicketModelSerializer
     lookup_field = "slug"
+
+    """ Дозволяє лише адміністраторам виконувати будь-яку дію """
     permission_classes = (IsAdminUser,)
