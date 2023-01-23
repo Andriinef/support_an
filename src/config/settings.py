@@ -59,6 +59,7 @@ REST_FRAMEWORK_AUTHENTICATION = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    "djoser",
 ]
 
 INSTALLED_APPS = (

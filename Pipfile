@@ -14,8 +14,10 @@ pydantic = "~=1.10.2"
 djangorestframework = "~=3.14.0"
 dj-rest-auth = "~=2.1.11"
 django-allauth = "~=0.48.0"
-djangorestframework-simplejwt = "~=5.2.2"
 django-rest-authemail = "~=2.1.4"
+djoser = "==2.0.5"
+djangorestframework_simplejwt = "==5.2.2"
+social-auth-app-django = "==5.0.0"
 
 
 [dev-packages]
