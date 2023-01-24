@@ -18,5 +18,11 @@ class TicketModelSerializer(serializers.ModelSerializer):
     # manager = serializers.SlugRelatedField(slug_field="email", read_only=True)
 
     class Meta:
-        fields = ["customer", "manager", "header", "body", "slug"]
+        fields = ["id", "customer", "manager", "header", "body", "slug"]
         model = Ticket
+
+
+class TicketLightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        exclude = ["body", "manager"]

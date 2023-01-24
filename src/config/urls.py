@@ -2,8 +2,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, re_path
 from django.views.static import serve
-from rest_framework_simplejwt.views import (TokenObtainPairView,
-                                            TokenRefreshView, TokenVerifyView)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -13,9 +11,6 @@ urlpatterns = [
     # path("dj-rest-auth/", include("dj_rest_auth.urls")),  # auth
     # path("dj-rest-auth/registration/",               # auth
     #      include("dj_rest_auth.registration.urls")),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     path("djoser-auth/", include("djoser.urls")),
     path("", include("core.urls"), name="core"),
     re_path(r"^images/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),

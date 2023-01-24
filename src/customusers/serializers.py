@@ -30,3 +30,12 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     # def validate(self, attrs):
     #     attrs["password"] = make_password(attrs["password"])
     #     return super().validate(attrs)
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            "email",
+            "password",
+        )

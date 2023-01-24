@@ -7,7 +7,7 @@ AUTH_USER_MODEL = "customusers.User"  # New custom user
 LOGIN_REDIRECT_URL = "tickets_tickets"  # Log In
 LOGOUT_REDIRECT_URL = "tickets_tickets"  # Log Out
 
-# Build paths inside the project like this: ROOT_DIR / 'subdir'.
+# Build paths inside the project like this: ROOT_DIR / "subdir".
 SRC_DIR = Path(__file__).resolve().parent.parent
 ROOT_DIR = SRC_DIR.parent
 
@@ -18,7 +18,7 @@ ROOT_DIR = SRC_DIR.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = getenv("DJANGO_DEBUG", default=False)
 
 ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS").split(", ")
@@ -48,6 +48,7 @@ LOCAL_APPS = [
     "core",
     "comments",
     "shared",
+    "authentication",
 ]
 
 REST_FRAMEWORK_AUTHENTICATION = [
@@ -189,15 +190,13 @@ ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")
 
 # User Authentication
 REST_FRAMEWORK = {
-    "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated",
-    ],
-    "DEFAULT_AUTHENTICATION_CLASSES": [
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.BasicAuthentication",
         # "rest_framework.authentication.TokenAuthentication",
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ],
+    ),
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.LimitOffsetPagination",
     "PAGE_SIZE": 2,
 }
