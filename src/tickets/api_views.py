@@ -1,26 +1,85 @@
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.decorators import api_view
 from rest_framework.generics import (CreateAPIView, ListAPIView,
                                      ListCreateAPIView, RetrieveAPIView,
                                      RetrieveDestroyAPIView,
                                      RetrieveUpdateAPIView)
 from rest_framework.permissions import (IsAdminUser, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
-from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
+from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
 from tickets.serializers import (TicketLightSerializer, TicketModelSerializer,
                                  TicketSerializer)
 
 
-@api_view(["POST"])
-def create_ticket(request) -> JsonResponse:
-    serializer = TicketModelSerializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    Ticket.objects.create(**serializer.validated_data)
-    return JsonResponse(serializer.validated_data)
+class TicketAPISet(ModelViewSet):
+    queryset = Ticket.objects.all()
+    model = Ticket
+    serializer_class = TicketSerializer
+
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == "list":
+            permission_classes = [RoleIsAdmin]
+        elif self.action == "create":
+            permission_classes = [RoleIsUser]
+        elif self.action == "retrieve":
+            permission_classes = (IsOwner | RoleIsAdmin | RoleIsManager,)
+        elif self.action == "update":
+            permission_classes = [RoleIsManager]
+        elif self.action == "destroy":
+            permission_classes = [RoleIsAdmin]
+        else:
+            permission_classes = []
+
+        return [permission() for permission in permission_classes]
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = TicketLightSerializer(queryset, many=True)
+        response = ResponseMultiSerializer({"results": serializer.data})
+
+        return Response(response.data)
+
+    def retrieve(self, request, pk: int):
+        instance = self.get_object()
+        serializer = TicketSerializer(instance)
+        response = ResponseSerializer({"result": serializer.data})
+
+        return JsonResponse(response.data)
+
+    def create(self, request):
+        context: dict = {"request": self.request}
+        serializer = TicketSerializer(data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        response = ResponseSerializer({"result": serializer.data})
+
+        return JsonResponse(response.data, status=status.HTTP_201_CREATED)
+
+    def update(self, request, pk: int):
+        instance: Ticket = self.get_object()
+
+        context: dict = {"request": self.request}
+        serializer = TicketSerializer(instance, data=request.data, context=context)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        response = ResponseSerializer({"result": serializer.data})
+
+        return JsonResponse(response.data)
+
+    def destroy(self, request, pk: int):
+        instance: Ticket = self.get_object()
+        instance.delete()
+
+        return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TicketsListAPIView(ListAPIView):
@@ -79,33 +138,3 @@ class TicketRetrieveDestroyAPIView(RetrieveDestroyAPIView):
 
     """ Дозволяє лише адміністраторам виконувати будь-яку дію """
     permission_classes = (IsAdminUser,)
-
-
-class TicketAPISet(ViewSet):
-    def list(self, request):
-        queryset = Ticket.objects.all()
-        serializer = TicketLightSerializer(queryset, many=True)
-        response = ResponseMultiSerializer({"results": serializer.data})
-        return JsonResponse(response.data)
-
-    def retrieve(self, request, id_: int):
-        instance = Ticket.objects.get(id=id_)
-        serializer = TicketSerializer(instance)
-        response = ResponseSerializer({"result": serializer.data})
-        return JsonResponse(response.data)
-
-    def create(self, request):
-        context: dict = {
-            "request": self.request,
-        }
-        serializer = TicketSerializer(data=request.data, context=context)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        response = ResponseSerializer({"result": serializer.data})
-
-        return JsonResponse(response.data, status=status.HTTP_201_CREATED)
-
-
-tickets_list = TicketAPISet.as_view({"get": "list"})
-ticket_create = TicketAPISet.as_view({"post": "create"})
-ticket_retrieve = TicketAPISet.as_view({"get": "retrieve"})

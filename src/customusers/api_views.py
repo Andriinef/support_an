@@ -33,22 +33,31 @@ class UserViewSet(ViewSet):
 
     def create(self, request):
         serializer = UserSerializer(data=request.data)
+        context: dict = {
+            "request": self.request,
+        }
+        serializer = UserSerializer(data=request.data, context=context)
         if serializer.is_valid():
             serializer.save()
             response = ResponseSerializer({"result": serializer.data})
             return JsonResponse(response.data, status=status.HTTP_201_CREATED)
         return JsonResponse(response.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class UserupdateViewSet(ViewSet):
     def update(self, request, id_: int):
         user = User.objects.get(id=id_)
-        serializer = UserSerializer(user, data=request.data, partial=True)
+        context: dict = {
+            "request": self.request,
+        }
+        serializer = UserSerializer(user, data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response = ResponseSerializer({"result": serializer.data})
         return JsonResponse(response.data)
 
 
-customusers_list = UserViewSet.as_view({"get": "list"})
-customuser_create = UserViewSet.as_view({"post": "create"})
-customuser_retrieve = UserViewSet.as_view({"get": "retrieve"})
-customuser_update = UserViewSet.as_view({"post": "update"})
+customusers_list_create = UserViewSet.as_view({"get": "list", "post": "create"})
+customuser_detail = UserViewSet.as_view(
+    {"get": "retrieve", "put": "update", "delete": "destroy"}
+)

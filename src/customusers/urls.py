@@ -1,13 +1,10 @@
 from django.urls import path
 
-from customusers.api_views import (UserCreateAPIView, customuser_create,
-                                   customuser_retrieve, customuser_update,
-                                   customusers_list)
+from customusers.api_views import (UserCreateAPIView, customuser_detail,
+                                   customusers_list_create)
 
 urlpatterns = [
-    path("", customusers_list),
-    path("", customuser_create),
-    path("<int:id_>/", customuser_retrieve),
-    path("<int:id_>/", customuser_update),
+    path("", customusers_list_create),
+    path("<int:id_>/", customuser_detail),
     path("create/", UserCreateAPIView.as_view()),
 ]

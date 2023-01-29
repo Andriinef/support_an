@@ -1,19 +1,19 @@
 from django.urls import path
+from rest_framework.routers import DefaultRouter
 
-from tickets.api_views import (TicketCreateAPIView, TicketListCreateAPIView,
-                               TicketRetrieveAPIView,
+from tickets.api_views import (TicketAPISet, TicketCreateAPIView,
+                               TicketListCreateAPIView, TicketRetrieveAPIView,
                                TicketRetrieveDestroyAPIView,
-                               TicketRetrieveUpdateAPIView, TicketsListAPIView,
-                               ticket_create, ticket_retrieve, tickets_list)
+                               TicketRetrieveUpdateAPIView, TicketsListAPIView)
+
+router = DefaultRouter()
+router.register(r"tickets", TicketAPISet, basename="tickets")
 
 urlpatterns = [
-    path("", tickets_list),
-    path("", ticket_create),
-    path("<int:id_>/", ticket_retrieve),
     path("listapi/", TicketsListAPIView.as_view()),
     path("create/", TicketCreateAPIView.as_view()),
     path("listcreate/", TicketListCreateAPIView.as_view(), name="tickets_tickets"),
+    path("retrieve/<slug:slug>/", TicketRetrieveAPIView.as_view()),
     path("retrieveupdate/<slug:slug>/", TicketRetrieveUpdateAPIView.as_view()),
     path("retrievedestroy/<slug:slug>/", TicketRetrieveDestroyAPIView.as_view()),
-    path("<slug:slug>/", TicketRetrieveAPIView.as_view()),
-]
+] + router.urls
