@@ -43,8 +43,6 @@ class UserViewSet(ViewSet):
             return JsonResponse(response.data, status=status.HTTP_201_CREATED)
         return JsonResponse(response.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class UserupdateViewSet(ViewSet):
     def update(self, request, id_: int):
         user = User.objects.get(id=id_)
         context: dict = {

@@ -59,6 +59,7 @@ class TicketAPISet(ModelViewSet):
         serializer = TicketSerializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+
         response = ResponseSerializer({"result": serializer.data})
 
         return JsonResponse(response.data, status=status.HTTP_201_CREATED)

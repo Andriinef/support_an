@@ -13,6 +13,4 @@ urlpatterns = [
     #      include("dj_rest_auth.registration.urls")),
     path("djoser-auth/", include("djoser.urls")),
     path("", include("core.urls"), name="core"),
-    re_path(r"^images/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
-    re_path(r"^static/(?P<path>.*)$", serve, {"document_root": settings.STATIC_ROOT}),
 ]
