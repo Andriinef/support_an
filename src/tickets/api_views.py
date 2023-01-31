@@ -19,38 +19,38 @@ class TicketAPISet(ModelViewSet):
     queryset = Ticket.objects.all()
     model = Ticket
     serializer_class = TicketSerializer
-    permission_classes = [
-        RoleIsManager | RoleIsAdmin
-        if ModelViewSet.action == "list"
-        else RoleIsUser
-        if ModelViewSet.action == "create"
-        else IsOwner | RoleIsAdmin | RoleIsManager
-        if ModelViewSet.action == "retrieve"
-        else RoleIsManager | RoleIsAdmin
-        if ModelViewSet.action == "update"
-        else RoleIsManager | RoleIsAdmin
-        if ModelViewSet.action == "destroy"
-        else []
-    ]
+    # permission_classes = [
+    #     RoleIsManager | RoleIsAdmin
+    #     if ModelViewSet.action == "list"
+    #     else RoleIsUser
+    #     if ModelViewSet.action == "create"
+    #     else IsOwner | RoleIsAdmin | RoleIsManager
+    #     if ModelViewSet.action == "retrieve"
+    #     else RoleIsManager | RoleIsAdmin
+    #     if ModelViewSet.action == "update"
+    #     else RoleIsManager | RoleIsAdmin
+    #     if ModelViewSet.action == "destroy"
+    #     else []
+    # ]
 
-    # def get_permissions(self):
-    #     """
-    #     Instantiates and returns the list of permissions that this view requires.
-    #     """
-    #     if self.action == "list":
-    #         permission_classes = (RoleIsManager | RoleIsAdmin,)
-    #     elif self.action == "create":
-    #         permission_classes = [RoleIsUser]
-    #     elif self.action == "retrieve":
-    #         permission_classes = (IsOwner | RoleIsManager | RoleIsAdmin,)
-    #     elif self.action == "update":
-    #         permission_classes = (RoleIsManager | RoleIsAdmin,)
-    #     elif self.action == "destroy":
-    #         permission_classes = (RoleIsManager | RoleIsAdmin,)
-    #     else:
-    #         permission_classes = []
+    def get_permissions(self):
+        """
+        Instantiates and returns the list of permissions that this view requires.
+        """
+        if self.action == "list":
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
+        elif self.action == "create":
+            permission_classes = [RoleIsUser]
+        elif self.action == "retrieve":
+            permission_classes = (IsOwner | RoleIsManager | RoleIsAdmin,)
+        elif self.action == "update":
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
+        elif self.action == "destroy":
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
+        else:
+            permission_classes = []
 
-    #     return [permission() for permission in permission_classes]
+        return [permission() for permission in permission_classes]
 
     def list(self, request):
         queryset = self.get_queryset()
