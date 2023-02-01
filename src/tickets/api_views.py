@@ -29,7 +29,7 @@ class TicketAPISet(ModelViewSet):
     #     else RoleIsManager | RoleIsAdmin
     #     if ModelViewSet.action == "update"
     #     else RoleIsManager | RoleIsAdmin
-    #     if ModelViewSet.action == "destroy"
+    #     if ModelViewSet.action == "destroy"N
     #     else []
     # ]
 
@@ -38,11 +38,11 @@ class TicketAPISet(ModelViewSet):
         Instantiates and returns the list of permissions that this view requires.
         """
         if self.action == "list":
-            permission_classes = (RoleIsManager | RoleIsAdmin,)
+            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
         elif self.action == "create":
-            permission_classes = [RoleIsUser]
+            permission_classes = (RoleIsUser | IsOwner,)
         elif self.action == "retrieve":
-            permission_classes = (IsOwner | RoleIsManager | RoleIsAdmin,)
+            permission_classes = (RoleIsUser | IsOwner | RoleIsManager | RoleIsAdmin,)
         elif self.action == "update":
             permission_classes = (RoleIsManager | RoleIsAdmin,)
         elif self.action == "destroy":
@@ -60,15 +60,15 @@ class TicketAPISet(ModelViewSet):
         return JsonResponse(response.data)
 
     def retrieve(self, request, pk: int):
-        instance = self.get_object()
-        serializer = TicketSerializer(instance)
+        instance: Ticket = self.get_object()
+        serializer = TicketModelSerializer(instance)
         response = ResponseSerializer({"result": serializer.data})
 
         return JsonResponse(response.data)
 
     def create(self, request):
         context: dict = {"request": self.request}
-        serializer = TicketSerializer(data=request.data, context=context)
+        serializer = TicketModelSerializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
@@ -80,7 +80,7 @@ class TicketAPISet(ModelViewSet):
         instance: Ticket = self.get_object()
 
         context: dict = {"request": self.request}
-        serializer = TicketSerializer(instance, data=request.data, context=context)
+        serializer = TicketModelSerializer(instance, data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

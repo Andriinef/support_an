@@ -1,14 +1,14 @@
-from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ViewSet
 
-from customusers.serializers import UserRegistrationSerializer
+from customusers.serializers import UserRegistrationSerializer, UserSerializer
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
+from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
+from customusers.models import User
 
-User = get_user_model()
 
 
 class UserCreateAPIView(ListCreateAPIView):
@@ -19,29 +19,47 @@ class UserCreateAPIView(ListCreateAPIView):
 
 
 class UserViewSet(ViewSet):
+    def get_permissions(self):
+        if self.action == "list":
+            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
+        elif self.action == "create":
+            permission_classes = (RoleIsUser | IsOwner | RoleIsAdmin,)
+        elif self.action == "retrieve":
+            permission_classes = (RoleIsUser | IsOwner | RoleIsManager | RoleIsAdmin,)
+        elif self.action == "update":
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
+        elif self.action == "destroy":
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
+        else:
+            permission_classes = []
+
+        return [permission() for permission in permission_classes]
+
     def list(self, request):
-        users = User.objects.all()
-        serializer = UserRegistrationSerializer(users, many=True)
+        user = User.objects.all()
+        serializer = UserSerializer(user, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
+
         return JsonResponse(response.data)
 
     def retrieve(self, request, pk: int):
         user = User.objects.get(pk=pk)
         serializer = UserRegistrationSerializer(user)
         response = ResponseSerializer({"result": serializer.data})
+
         return JsonResponse(response.data)
 
     def create(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
-        context: dict = {
-            "request": self.request,
-        }
+        context = {"request": self.request}
         serializer = UserRegistrationSerializer(data=request.data, context=context)
         if serializer.is_valid():
             serializer.save()
+
             response = ResponseSerializer({"result": serializer.data})
+
             return JsonResponse(response.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(response.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        return JsonResponse({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk: int):
         user = User.objects.get(pk=pk)
@@ -56,8 +74,8 @@ class UserViewSet(ViewSet):
         response = ResponseSerializer({"result": serializer.data})
         return JsonResponse(response.data)
 
+    def destroy(self, request, pk: int):
+        user = User.objects.filter(pk=pk).first()
+        user.delete()
 
-customusers_list_create = UserViewSet.as_view({"get": "list", "post": "create"})
-customuser_detail = UserViewSet.as_view(
-    {"get": "retrieve", "put": "update", "delete": "destroy"}
-)
+        return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
