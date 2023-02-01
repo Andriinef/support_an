@@ -4,11 +4,10 @@ from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import ViewSet
 
+from customusers.models import User
 from customusers.serializers import UserRegistrationSerializer, UserSerializer
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
-from customusers.models import User
-
 
 
 class UserCreateAPIView(ListCreateAPIView):

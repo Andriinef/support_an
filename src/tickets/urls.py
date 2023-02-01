@@ -14,10 +14,10 @@ urlpatterns = router.urls
 
 
 # urlpatterns = [
-    # path("list/", TicketsListAPIView.as_view()),
-    # path("create/", TicketCreateAPIView.as_view()),
-    # path("listcreate/", TicketListCreateAPIView.as_view()),
-    # path("retrieve/<slug:slug>/", TicketRetrieveAPIView.as_view()),
-    # path("retrieveupdate/<slug:slug>/", TicketRetrieveUpdateAPIView.as_view()),
-    # path("retrievedestroy/<slug:slug>/", TicketRetrieveDestroyAPIView.as_view()),
+#     path("list/", TicketsListAPIView.as_view()),
+#     path("create/", TicketCreateAPIView.as_view()),
+#     path("listcreate/", TicketListCreateAPIView.as_view()),
+#     path("retrieve/<slug:slug>/", TicketRetrieveAPIView.as_view()),
+#     path("retrieveupdate/<slug:slug>/", TicketRetrieveUpdateAPIView.as_view()),
+#     path("retrievedestroy/<slug:slug>/", TicketRetrieveDestroyAPIView.as_view()),
 # ]
