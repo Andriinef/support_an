@@ -10,5 +10,8 @@ class Comment(TimeStampMixin):
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name="comments"
     )
     ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
-
+    prev_comment = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=False, related_name="next"),
     body = models.TextField()
+
+    def __str__(self) -> str:
+        return str(self.ticket)

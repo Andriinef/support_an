@@ -1,8 +1,17 @@
 from django.urls import path
 
-from comments.api_views import CommentsListAPIView, CommentsRetrieveAPIView
+from comments.api_views import CommentsCreateAPI, CommentsListAPI
+
+# In this application we didn't follow the HTTP approach
+# in order to have 2 different approaches in this project
 
 urlpatterns = [
-    path("", CommentsListAPIView.as_view()),
-    path("<int:pk>/", CommentsRetrieveAPIView.as_view()),
+    path(
+        "tickets/<int:ticket_id>/comments/create",
+        CommentsCreateAPI.as_view(),
+    ),
+    path(
+        "tickets/<int:ticket_id>/comments",
+        CommentsListAPI.as_view(),
+    ),
 ]

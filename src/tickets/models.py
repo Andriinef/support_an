@@ -23,7 +23,7 @@ class Ticket(TimeStampMixin):
     body = models.TextField()
     slug = models.SlugField(max_length=100, unique=True, default=None)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.header
 
     def get_absolute_url(self):

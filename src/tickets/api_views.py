@@ -6,8 +6,10 @@ from rest_framework.generics import (CreateAPIView, ListAPIView,
                                      RetrieveUpdateAPIView)
 from rest_framework.permissions import (IsAdminUser, IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from customusers.constants import Role
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
 from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
@@ -38,7 +40,7 @@ class TicketAPISet(ModelViewSet):
         Instantiates and returns the list of permissions that this view requires.
         """
         if self.action == "list":
-            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
+            permission_classes = (RoleIsManager | RoleIsAdmin,)
         elif self.action == "create":
             permission_classes = (RoleIsUser | IsOwner,)
         elif self.action == "retrieve":
@@ -53,11 +55,15 @@ class TicketAPISet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def list(self, request):
-        queryset = self.get_queryset()
+        if request.user.role == Role.ADMIN:
+            queryset = self.get_queryset()
+        else:
+            queryset = Ticket.objects.filter(manager=request.user)
+
         serializer = TicketLightSerializer(queryset, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
 
-        return JsonResponse(response.data)
+        return Response(response.data)
 
     def retrieve(self, request, pk: int):
         instance: Ticket = self.get_object()

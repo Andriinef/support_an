@@ -1,10 +1,9 @@
 from django.contrib import admin
 
 from comments.models import Comment
+from shared.django import TimeStampReadonlyAdmin
 
 
-class CommentAdmin(admin.ModelAdmin):
-    list_display = ("__add__",)
-
-
-admin.site.register(Comment)
+@admin.register(Comment)
+class CommentsAdmin(TimeStampReadonlyAdmin):
+    list_display = ["body", "ticket", "user"]
