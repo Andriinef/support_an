@@ -22,11 +22,13 @@ drf-yasg = "==1.21.4"
 
 
 [dev-packages]
+black = "~=22.10.0"
 flake8 = "~=6.0.0"
-black = "~=22.12.0"
-isort = "~=5.11.4"
-autopep8 = "*"
-ipdb = "*"
+isort = "~=5.10.1"
+mypy = "~=0.991"
+django-stubs = "~=1.14.0"
+djangorestframework-stubs = "~=1.8.0"
+ipdb = "0.13.11"
 
 [requires]
 python_version = "3.10"

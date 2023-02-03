@@ -64,9 +64,7 @@ REST_FRAMEWORK_AUTHENTICATION = [
     "djoser",
 ]
 
-INSTALLED_APPS = (
-    DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + REST_FRAMEWORK_AUTHENTICATION
-)
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + REST_FRAMEWORK_AUTHENTICATION
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -184,9 +182,7 @@ SITE_ID = 1
 
 # Exchange rates service (Alpha Vantage)
 # https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange?json
-ALPHA_VANTAGE_BASE_URL = getenv(
-    "ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co"
-)
+ALPHA_VANTAGE_BASE_URL = getenv("ALPHA_VANTAGE_BASE_URL", default="https://www.alphavantage.co")
 ALPHA_VANTAGE_API_KEY = getenv("ALPHA_VANTAGE_API_KEY")
 
 # User Authentication

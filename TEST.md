@@ -1,17 +1,21 @@
 # Test
 
 ```python
-black .
+black ./
 ```
 
 ```python
-isort .
+isort ./
 ```
 
 ```python
-flake8
+flake8 ./
 ```
 
 ```python
 black --check . && isort --check .
+```
+
+```python
+mypy ./
 ```

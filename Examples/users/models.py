@@ -30,9 +30,7 @@ class User(models.Model):
         unique=True,
         help_text="Наприклад: user@gmail.com",
     )
-    password = models.CharField(
-        "Пароль", max_length=50, error_messages={"required": "Вкажить пароль"}
-    )
+    password = models.CharField("Пароль", max_length=50, error_messages={"required": "Вкажить пароль"})
     password_again = models.CharField(
         "Введіть пароль ще раз",
         max_length=50,
@@ -53,9 +51,7 @@ class User(models.Model):
         verbose_name="Домашня адреса",
         on_delete=models.CASCADE,
     )
-    date_created = models.DateTimeField(
-        default=timezone.now, verbose_name="Час публікації"
-    )
+    date_created = models.DateTimeField(default=timezone.now, verbose_name="Час публікації")
     activated = models.BooleanField("Активувація", default=True)
 
     class Meta:
@@ -63,9 +59,7 @@ class User(models.Model):
         verbose_name_plural = "Клиенти"
 
     def __str__(self):
-        return (
-            f"{self.first_name} {self.last_name} {self.login_name}, тел.: {self.phone}"
-        )
+        return f"{self.first_name} {self.last_name} {self.login_name}, тел.: {self.phone}"
 
     def get_absolute_url(self):
         return reverse("login_name", kwargs={"pk": self.pk})

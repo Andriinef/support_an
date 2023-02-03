@@ -38,9 +38,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "number",
-                    models.CharField(
-                        max_length=50, null=True, verbose_name="номер автомобіля"
-                    ),
+                    models.CharField(max_length=50, null=True, verbose_name="номер автомобіля"),
                 ),
             ],
             options={
@@ -63,9 +61,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=50, verbose_name="Запчастина")),
                 (
                     "quanti",
-                    models.PositiveSmallIntegerField(
-                        default=1, verbose_name="Кількість одиницю"
-                    ),
+                    models.PositiveSmallIntegerField(default=1, verbose_name="Кількість одиницю"),
                 ),
                 (
                     "price",
@@ -112,9 +108,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=50, verbose_name="Робота")),
                 (
                     "hour",
-                    models.FloatField(
-                        default=1, help_text="годин", verbose_name="Годин в роботі"
-                    ),
+                    models.FloatField(default=1, help_text="годин", verbose_name="Годин в роботі"),
                 ),
                 (
                     "price",
@@ -155,9 +149,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=150, verbose_name="Тип послуги")),
                 (
                     "hour",
-                    models.FloatField(
-                        default=1, help_text="годин", verbose_name="Годин для послуги"
-                    ),
+                    models.FloatField(default=1, help_text="годин", verbose_name="Годин для послуги"),
                 ),
                 (
                     "price",
@@ -243,9 +235,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "total_price",
-                    models.IntegerField(
-                        default=0.0, verbose_name="Загальна вартість робот та послуг"
-                    ),
+                    models.IntegerField(default=0.0, verbose_name="Загальна вартість робот та послуг"),
                 ),
                 (
                     "car",

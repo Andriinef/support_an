@@ -1,11 +1,18 @@
 from django.http import JsonResponse
 from rest_framework import status
-from rest_framework.generics import (CreateAPIView, ListAPIView,
-                                     ListCreateAPIView, RetrieveAPIView,
-                                     RetrieveDestroyAPIView,
-                                     RetrieveUpdateAPIView)
-from rest_framework.permissions import (IsAdminUser, IsAuthenticated,
-                                        IsAuthenticatedOrReadOnly)
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    ListCreateAPIView,
+    RetrieveAPIView,
+    RetrieveDestroyAPIView,
+    RetrieveUpdateAPIView,
+)
+from rest_framework.permissions import (
+    IsAdminUser,
+    IsAuthenticated,
+    IsAuthenticatedOrReadOnly,
+)
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -13,8 +20,11 @@ from customusers.constants import Role
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
 from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
-from tickets.serializers import (TicketLightSerializer, TicketModelSerializer,
-                                 TicketSerializer)
+from tickets.serializers import (
+    TicketLightSerializer,
+    TicketModelSerializer,
+    TicketSerializer,
+)
 
 
 class TicketAPISet(ModelViewSet):
@@ -95,7 +105,7 @@ class TicketAPISet(ModelViewSet):
         return JsonResponse(response.data)
 
     def destroy(self, request, pk: int):
-        instance: Ticket = self.get_object()
+        instance = Ticket.objects.filter(pk=pk).first()
         instance.delete()
 
         return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)

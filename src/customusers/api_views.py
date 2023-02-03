@@ -58,16 +58,14 @@ class UserViewSet(ViewSet):
 
             return JsonResponse(response.data, status=status.HTTP_201_CREATED)
 
-        return JsonResponse({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
     def update(self, request, pk: int):
         user = User.objects.get(pk=pk)
         context: dict = {
             "request": self.request,
         }
-        serializer = UserRegistrationSerializer(
-            user, data=request.data, context=context
-        )
+        serializer = UserRegistrationSerializer(user, data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         response = ResponseSerializer({"result": serializer.data})

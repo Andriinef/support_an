@@ -12,7 +12,11 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "password",)
+        fields = (
+            "email",
+            "password",
+        )
+
     #     _read_only_fields = ["email"]  # поля лише для читання
     #     _write_only_fields = ["password"]  # поля лише для запису
 

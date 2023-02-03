@@ -17,15 +17,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="parts",
             name="total_price",
-            field=models.FloatField(
-                default=0.0, help_text="грн.", verbose_name="Загальна ціна"
-            ),
+            field=models.FloatField(default=0.0, help_text="грн.", verbose_name="Загальна ціна"),
         ),
         migrations.AlterField(
             model_name="parts",
             name="price",
-            field=models.FloatField(
-                default=0.0, help_text="грн.", verbose_name="Ціна за одиницю"
-            ),
+            field=models.FloatField(default=0.0, help_text="грн.", verbose_name="Ціна за одиницю"),
         ),
     ]

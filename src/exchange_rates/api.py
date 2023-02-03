@@ -19,9 +19,7 @@ def get_price(request) -> JsonResponse:
     elif request.method == "GET":
         from_currency: str = "USD"
         to_currency: str = "UAH"
-    responce = AlphavantageResponse(
-        **AlphavantageClient().get_user_currency(from_currency, to_currency)
-    )
+    responce = AlphavantageResponse(**AlphavantageClient().get_user_currency(from_currency, to_currency))
     return JsonResponse(responce.dict())
 
 

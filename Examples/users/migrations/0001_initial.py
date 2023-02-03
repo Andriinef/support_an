@@ -28,15 +28,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "street",
-                    models.CharField(
-                        default="----", max_length=100, verbose_name="вулиця"
-                    ),
+                    models.CharField(default="----", max_length=100, verbose_name="вулиця"),
                 ),
                 (
                     "number",
-                    models.PositiveSmallIntegerField(
-                        default="0", verbose_name="номер будинку"
-                    ),
+                    models.PositiveSmallIntegerField(default="0", verbose_name="номер будинку"),
                 ),
                 (
                     "postal",
@@ -44,15 +40,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "city",
-                    models.CharField(
-                        default="----", max_length=100, verbose_name="місто"
-                    ),
+                    models.CharField(default="----", max_length=100, verbose_name="місто"),
                 ),
                 (
                     "country",
-                    models.CharField(
-                        default="----", max_length=100, verbose_name="країна"
-                    ),
+                    models.CharField(default="----", max_length=100, verbose_name="країна"),
                 ),
             ],
             options={
@@ -76,9 +68,7 @@ class Migration(migrations.Migration):
                 ("last_name", models.CharField(max_length=50, verbose_name="Прізвеще")),
                 (
                     "login_name",
-                    models.CharField(
-                        db_index=True, max_length=50, unique=True, verbose_name="Логін"
-                    ),
+                    models.CharField(db_index=True, max_length=50, unique=True, verbose_name="Логін"),
                 ),
                 (
                     "User_email",
@@ -112,15 +102,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "phone_2",
-                    models.CharField(
-                        blank=True, max_length=50, verbose_name="Номер телефона 2"
-                    ),
+                    models.CharField(blank=True, max_length=50, verbose_name="Номер телефона 2"),
                 ),
                 (
                     "date_created",
-                    models.DateTimeField(
-                        default=django.utils.timezone.now, verbose_name="Час публікації"
-                    ),
+                    models.DateTimeField(default=django.utils.timezone.now, verbose_name="Час публікації"),
                 ),
                 (
                     "activated",

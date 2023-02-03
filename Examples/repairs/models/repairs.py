@@ -31,9 +31,7 @@ class Repair(models.Model):
         choices=Status.choices,
         default=Status.CREATED,
     )
-    time_to_work = models.DateTimeField(
-        "Дата та час прийняття замовлення", null=True, blank=True, default=timezone.now
-    )
+    time_to_work = models.DateTimeField("Дата та час прийняття замовлення", null=True, blank=True, default=timezone.now)
     time_to_ordering = models.DateTimeField(
         "Дата та час оформлення замовлення", null=True, blank=True, default=timezone.now
     )
@@ -48,19 +46,15 @@ class Repair(models.Model):
     type_repair = models.ManyToManyField(
         to="repairs.TypeRepair", verbose_name="Тип послуги", related_name="type_repairs"
     )
-    parts = models.ManyToManyField(
-        to="repairs.Parts", verbose_name="Запчастини", related_name="part_repairs"
-    )
-    total_price = models.IntegerField(
-        "Загальна вартість робот та послуг", default=0.0, help_text="грн."
-    )
+    parts = models.ManyToManyField(to="repairs.Parts", verbose_name="Запчастини", related_name="part_repairs")
+    total_price = models.IntegerField("Загальна вартість робот та послуг", default=0.0, help_text="грн.")
 
     class Meta:
         verbose_name = "Замовлення"
         verbose_name_plural = "Замовлення"
 
     def __str__(self):
-        return f"Заявка {self.id}, статус - {self.status}, авто - {self.car}, загальна вартість робот та послуг: {self.total_price} грн."
+        return f"Заявка: {self.id}, статус: {self.status}, авто: {self.car}, загальна вартість: {self.total_price} грн."
 
     def get_absolute_url(self):
         return reverse("repairs:detail", kwargs={"pk": self.pk})

@@ -32,9 +32,7 @@ class Migration(migrations.Migration):
                 ("body", models.TextField()),
                 (
                     "ticket",
-                    models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="tickets.ticket"
-                    ),
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to="tickets.ticket"),
                 ),
                 (
                     "user",
