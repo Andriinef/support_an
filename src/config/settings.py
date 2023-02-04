@@ -22,7 +22,11 @@ SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 DEBUG = getenv("DJANGO_DEBUG", default=False)
 
 # ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS")
-ALLOWED_HOSTS = ("localhost", "127.0.0.1", "0.0.0.0",)
+ALLOWED_HOSTS = (
+    "localhost",
+    "127.0.0.1",
+    "0.0.0.0",
+)
 
 # Application definition
 
