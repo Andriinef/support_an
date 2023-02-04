@@ -42,7 +42,7 @@ exclude = [
     'migrations',
     'yasg',
     'Examples',
-    'settings',
+    'src/config/settings.py',
     'src/customusers/models',
 ]
 follow_imports = 'silent'
