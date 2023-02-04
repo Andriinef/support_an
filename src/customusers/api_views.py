@@ -34,21 +34,21 @@ class UserViewSet(ViewSet):
 
         return [permission() for permission in permission_classes]
 
-    def list(self, request):
+    def list(self, request) -> JsonResponse:
         user = User.objects.all()
         serializer = UserSerializer(user, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
 
         return JsonResponse(response.data)
 
-    def retrieve(self, request, pk: int):
+    def retrieve(self, request, pk: int) -> JsonResponse:
         user = User.objects.get(pk=pk)
         serializer = UserRegistrationSerializer(user)
         response = ResponseSerializer({"result": serializer.data})
 
         return JsonResponse(response.data)
 
-    def create(self, request):
+    def create(self, request) -> JsonResponse:
         context = {"request": self.request}
         serializer = UserRegistrationSerializer(data=request.data, context=context)
         if serializer.is_valid():
@@ -60,7 +60,7 @@ class UserViewSet(ViewSet):
 
         return JsonResponse({"errors": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, pk: int):
+    def update(self, request, pk: int) -> JsonResponse:
         user = User.objects.get(pk=pk)
         context: dict = {
             "request": self.request,
@@ -71,8 +71,8 @@ class UserViewSet(ViewSet):
         response = ResponseSerializer({"result": serializer.data})
         return JsonResponse(response.data)
 
-    def destroy(self, request, pk: int):
-        user = User.objects.filter(pk=pk).first()
+    def destroy(self, request, pk: int) -> JsonResponse:
+        user = User.objects.filter(pk=pk)
         user.delete()
 
         return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)

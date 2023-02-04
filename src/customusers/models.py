@@ -8,7 +8,7 @@ from customusers.managers import UserManager
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField("Ім'я", max_length=50, blank=True)
     last_name = models.CharField("Прізвеще", max_length=50, blank=True)
-    last_login = models.CharField("Логін", max_length=50)
+    last_login = models.CharField("Логін", max_length=50, blank=True)
     email = models.EmailField(unique=True)
     is_staff = models.BooleanField("Персонал", default=False)
     is_active = models.BooleanField("Активний", default=True)

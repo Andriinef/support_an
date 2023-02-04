@@ -13,7 +13,7 @@ class CommentsCreateAPI(CreateAPIView):
     lookup_url_kwarg = "ticket_id"
 
     def get_queryset(self):
-        ticket_id: int = self.kwargs[self.lookup_field]
+        ticket_id = self.kwargs[self.lookup_field]
         return Comment.objects.filter(ticket_id=ticket_id)
 
 

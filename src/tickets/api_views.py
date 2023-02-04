@@ -1,4 +1,5 @@
-from django.http import JsonResponse
+from typing import Any
+
 from rest_framework import status
 from rest_framework.generics import (
     CreateAPIView,
@@ -13,6 +14,7 @@ from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
 )
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -52,7 +54,7 @@ class TicketAPISet(ModelViewSet):
         if self.action == "list":
             permission_classes = (RoleIsManager | RoleIsAdmin,)
         elif self.action == "create":
-            permission_classes = (RoleIsUser | IsOwner,)
+            permission_classes = (RoleIsUser | IsOwner | RoleIsAdmin,)
         elif self.action == "retrieve":
             permission_classes = (RoleIsUser | IsOwner | RoleIsManager | RoleIsAdmin,)
         elif self.action == "update":
@@ -64,7 +66,7 @@ class TicketAPISet(ModelViewSet):
 
         return [permission() for permission in permission_classes]
 
-    def list(self, request):
+    def list(self, request, *args, **kwargs) -> Response:
         if request.user.role == Role.ADMIN:
             queryset = self.get_queryset()
         else:
@@ -75,40 +77,41 @@ class TicketAPISet(ModelViewSet):
 
         return Response(response.data)
 
-    def retrieve(self, request, pk: int):
-        instance: Ticket = self.get_object()
+    def retrieve(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        instance = self.get_object()
         serializer = TicketModelSerializer(instance)
         response = ResponseSerializer({"result": serializer.data})
 
-        return JsonResponse(response.data)
+        return Response(response.data)
 
-    def create(self, request):
-        context: dict = {"request": self.request}
+    def create(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        context = {"request": request}
         serializer = TicketModelSerializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         response = ResponseSerializer({"result": serializer.data})
 
-        return JsonResponse(response.data, status=status.HTTP_201_CREATED)
+        return Response(response.data, status=status.HTTP_201_CREATED)
 
-    def update(self, request, pk: int):
-        instance: Ticket = self.get_object()
+    def update(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        instance = self.get_object()
 
-        context: dict = {"request": self.request}
+        context = {"request": request}
         serializer = TicketModelSerializer(instance, data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         response = ResponseSerializer({"result": serializer.data})
 
-        return JsonResponse(response.data)
+        return Response(response.data, status=status.HTTP_201_CREATED)
 
-    def destroy(self, request, pk: int):
-        instance = Ticket.objects.filter(pk=pk).first()
+    def destroy(self, request: Request, *args: Any, **kwargs: Any) -> Response:
+        pk = kwargs.get("pk")
+        instance = Ticket.objects.filter(pk=pk)
         instance.delete()
 
-        return JsonResponse({}, status=status.HTTP_204_NO_CONTENT)
+        return Response({}, status=status.HTTP_204_NO_CONTENT)
 
 
 class TicketsListAPIView(ListAPIView):

@@ -16,7 +16,7 @@ dj-rest-auth = "~=2.1.11"
 django-allauth = "~=0.48.0"
 django-rest-authemail = "~=2.1.4"
 djoser = "==2.0.5"
-djangorestframework_simplejwt = "==5.2.2"
+djangorestframework_simplejwt = "~=5.2.2"
 social-auth-app-django = "==5.0.0"
 drf-yasg = "==1.21.4"
 

@@ -1,14 +1,14 @@
 from django.urls import re_path
-from drf_yasg import openapi
+from drf_yasg.openapi import Info, License
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
 
 schema_view = get_schema_view(
-    openapi.Info(
+    Info(
         title="Support API",
         default_version="v1",
         description="Test description",
-        license=openapi.License(name="BSD License"),
+        license=License(name="BSD License"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),

@@ -40,16 +40,19 @@ mypy_path = 'src'
 exclude = [
     'trash',
     'migrations',
+    'yasg',
+    'Examples',
+    'ettings',
+    'src/customusers/models',
 ]
 follow_imports = 'silent'
 warn_redundant_casts = true
 warn_unused_ignores = true
 show_error_codes = true
 namespace_packages = true
-strict_imports = true
 
 [[tool.mypy.overrides]]
-module = []
+module = ["rest_framework_simplejwt.*", "allauth.*"]
 ignore_missing_imports = true
 
 [tool.django-stubs]

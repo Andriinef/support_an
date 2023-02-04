@@ -1,10 +1,10 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 
-from shared.django import TimeStampReadonlyAdmin
 from tickets.models import Ticket
 
 
 @admin.register(Ticket)
-class TicketsAdmin(TimeStampReadonlyAdmin):
+class TicketsAdmin(ModelAdmin):
     list_display = ("id", "customer", "manager", "header", "slug", "body")
     prepopulated_fields = {"slug": ("header",)}

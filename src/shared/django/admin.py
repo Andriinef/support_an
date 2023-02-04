@@ -1,6 +1,9 @@
 from django.contrib.admin import ModelAdmin
 
-_FIELDS = ["created_at", "updated_at"]
+_FIELDS = (
+    "created_at",
+    "updated_at",
+)
 
 
 class TimeStampReadonlyAdmin(ModelAdmin):
