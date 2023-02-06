@@ -8,7 +8,7 @@ User = get_user_model()
 class UserAdmin(admin.ModelAdmin):
     exclude = ["user_permissions", "groups"]
     readonly_fields = [
-        # "last_login",
+        "last_login",
         "email",
         "password",
         "is_superuser",
