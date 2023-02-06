@@ -52,7 +52,7 @@ class TicketAPISet(ModelViewSet):
         Instantiates and returns the list of permissions that this view requires.
         """
         if self.action == "list":
-            permission_classes = (RoleIsManager | RoleIsAdmin,)
+            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
         elif self.action == "create":
             permission_classes = (RoleIsUser | IsOwner | RoleIsAdmin,)
         elif self.action == "retrieve":
@@ -69,8 +69,10 @@ class TicketAPISet(ModelViewSet):
     def list(self, request, *args, **kwargs) -> Response:
         if request.user.role == Role.ADMIN:
             queryset = self.get_queryset()
-        else:
+        elif request.user.role == Role.MANAGER:
             queryset = Ticket.objects.filter(manager=request.user)
+        else:
+            queryset = Ticket.objects.filter(customer=request.user)
 
         serializer = TicketLightSerializer(queryset, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})

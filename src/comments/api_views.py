@@ -3,8 +3,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 
 from comments.models import Comment
 from comments.serializers import CommentSerializer
-from customusers.constants import Role
 from tickets.models import Ticket
+from customusers.constants import Role
 
 
 class CommentsCreateAPI(CreateAPIView):
@@ -13,7 +13,7 @@ class CommentsCreateAPI(CreateAPIView):
     lookup_url_kwarg = "ticket_id"
 
     def get_queryset(self):
-        ticket_id = self.kwargs[self.lookup_field]
+        ticket_id: int = self.kwargs[self.lookup_field]
         return Comment.objects.filter(ticket_id=ticket_id)
 
 

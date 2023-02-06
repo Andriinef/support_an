@@ -15,7 +15,7 @@ class CommentSerializer(serializers.ModelSerializer):
         ticket_id: int = request.parser_context["kwargs"]["ticket_id"]
         ticket: Ticket = Ticket.objects.get(id=ticket_id)
 
-        last_comment: Comment | None = ticket.comment_set.last()
+        last_comment: Comment | None = ticket.comments.last()
 
         attrs["ticket"] = ticket
         attrs["user"] = request.user
