@@ -18,7 +18,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from customusers.constants import Role
+from shared.permissions import PermissionsMixin
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
 from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
@@ -29,7 +29,7 @@ from tickets.serializers import (
 )
 
 
-class TicketAPISet(ModelViewSet):
+class TicketAPISet(PermissionsMixin, ModelViewSet):
     queryset = Ticket.objects.all()
     model = Ticket
     serializer_class = TicketSerializer
@@ -67,13 +67,13 @@ class TicketAPISet(ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def list(self, request, *args, **kwargs) -> Response:
-        if request.user.role == Role.ADMIN:
-            queryset = self.get_queryset()
-        elif request.user.role == Role.MANAGER:
-            queryset = Ticket.objects.filter(manager=request.user)
-        else:
-            queryset = Ticket.objects.filter(customer=request.user)
-
+        # if request.user.role == Role.ADMIN:
+        #     queryset = self.get_queryset()
+        # elif request.user.role == Role.MANAGER:
+        #     queryset = Ticket.objects.filter(manager=request.user)
+        # else:
+        #     queryset = Ticket.objects.filter(customer=request.user)
+        queryset = self._get_tickets()
         serializer = TicketLightSerializer(queryset, many=True)
         response = ResponseMultiSerializer({"results": serializer.data})
 
