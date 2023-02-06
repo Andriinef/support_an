@@ -3,8 +3,8 @@ from rest_framework.generics import CreateAPIView, ListAPIView
 
 from comments.models import Comment
 from comments.serializers import CommentSerializer
-from tickets.models import Ticket
 from customusers.constants import Role
+from tickets.models import Ticket
 
 
 class CommentsCreateAPI(CreateAPIView):
