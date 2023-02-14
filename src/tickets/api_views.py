@@ -52,7 +52,7 @@ class TicketAPISet(PermissionsMixin, ModelViewSet):
         Instantiates and returns the list of permissions that this view requires.
         """
         if self.action == "list":
-            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
+            permission_classes = (RoleIsUser | RoleIsManager,)
         elif self.action == "create":
             permission_classes = (RoleIsUser | IsOwner | RoleIsAdmin,)
         elif self.action == "retrieve":

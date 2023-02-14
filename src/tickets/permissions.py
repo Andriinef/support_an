@@ -6,7 +6,7 @@ from tickets.models import Ticket
 
 class RoleIsAdmin(BasePermission):
     def has_permission(self, request, view):
-        return request.user.role == Role.ADMIN
+        return bool(Role.ADMIN)
 
 
 class RoleIsManager(BasePermission):
