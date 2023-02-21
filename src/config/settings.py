@@ -21,7 +21,8 @@ SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 # SECURITY WARNING: don"t run with debug turned on in production!
 DEBUG = getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = [host.strip() for host in getenv("DJANGO_ALLOWED_HOSTS", "").split(", ") if host]
+ALLOWED_HOSTS = [host.strip() for host in getenv("DJANGO_ALLOWED_HOSTS", default="0.0.0.0").split(", ") if host]
+# ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="0.0.0.0").split(", ")
 
 # Application definition
 DJANGO_APPS = [
@@ -107,12 +108,12 @@ DATABASES = {
     #     "NAME": ROOT_DIR / "db.sqlite3",
     # }
     "default": {
-        "ENGINE": getenv("DB_ENGINE"),
-        "HOST": getenv("DB_HOST"),
-        "NAME": getenv("DB_NAME"),
-        "USER": getenv("DB_USER"),
-        "PASSWORD": getenv("DB_PASSWORD"),
-        "PORT": getenv("DB_PORT"),
+        "ENGINE": getenv("POSTGRES_ENGINE"),
+        "HOST": getenv("POSTGRES_HOST"),
+        "NAME": getenv("POSTGRES_DB"),
+        "USER": getenv("POSTGRES_USER"),
+        "PASSWORD": getenv("POSTGRES_PASSWORD"),
+        "PORT": getenv("POSTGRES_PORT"),
     }
 }
 
