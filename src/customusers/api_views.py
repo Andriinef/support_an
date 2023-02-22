@@ -7,7 +7,6 @@ from rest_framework.viewsets import ViewSet
 from customusers.models import User
 from customusers.serializers import UserRegistrationSerializer, UserSerializer
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
-from tickets.permissions import IsOwner, RoleIsAdmin, RoleIsManager, RoleIsUser
 
 
 class UserCreateAPIView(ListCreateAPIView):
@@ -18,22 +17,6 @@ class UserCreateAPIView(ListCreateAPIView):
 
 
 class UserViewSet(ViewSet):
-    def get_permissions(self):
-        if self.action == "list":
-            permission_classes = (RoleIsUser | RoleIsManager | RoleIsAdmin,)
-        elif self.action == "create":
-            permission_classes = (RoleIsUser | IsOwner | RoleIsAdmin,)
-        elif self.action == "retrieve":
-            permission_classes = (RoleIsUser | IsOwner | RoleIsManager | RoleIsAdmin,)
-        elif self.action == "update":
-            permission_classes = (RoleIsManager | RoleIsAdmin,)
-        elif self.action == "destroy":
-            permission_classes = (RoleIsManager | RoleIsAdmin,)
-        else:
-            permission_classes = []
-
-        return [permission() for permission in permission_classes]
-
     def list(self, request) -> JsonResponse:
         user = User.objects.all()
         serializer = UserSerializer(user, many=True)
