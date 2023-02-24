@@ -3,7 +3,6 @@ from distutils.util import strtobool
 from os import getenv
 from pathlib import Path
 
-
 # User Accounts
 AUTH_USER_MODEL = "customusers.User"  # New custom user
 LOGIN_REDIRECT_URL = "tickets_tickets"  # Log In
