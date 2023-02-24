@@ -123,3 +123,29 @@ INSTALLED_APPS = [
 "exchange_rates.apps.ExchangeRatesConfig", # new
 ]
 ```
+
+## Workflow
+
+Django can create migrations for you. Make changes to your models - say, add a field and remove a model - and then run makemigrations:
+
+``` python
+python manage.py makemigrations
+```
+
+Once you have your new migration files, you should apply them to your database to make sure they work as expected:
+
+``` python
+python manage.py migrate
+```
+
+Set the STATIC_ROOT setting to the directory from which you’d like to serve these files, for example:
+
+``` python
+STATIC_ROOT = ROOT_DIR / "support_an/staticfiles"
+```
+
+Run the collectstatic management command:
+
+```python
+python src/manage.py collectstatic
+```

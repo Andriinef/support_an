@@ -34,3 +34,6 @@ data/
 
 # Kubernetes configmaps
 infra/configmaps.yaml
+
+# Staticfiles
+staticfiles/

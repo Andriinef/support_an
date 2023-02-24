@@ -1,6 +1,8 @@
 from datetime import timedelta
+from distutils.util import strtobool
 from os import getenv
 from pathlib import Path
+
 
 # User Accounts
 AUTH_USER_MODEL = "customusers.User"  # New custom user
@@ -19,10 +21,9 @@ ROOT_DIR = SRC_DIR.parent
 SECRET_KEY = getenv("DJANGO_SECRET_KEY", default="INVALID")
 
 # SECURITY WARNING: don"t run with debug turned on in production!
-DEBUG = getenv("DJANGO_DEBUG", default=False)
+DEBUG = strtobool(getenv("DJANGO_DEBUG", default="0"))
 
-ALLOWED_HOSTS = [host.strip() for host in getenv("DJANGO_ALLOWED_HOSTS", default="0.0.0.0").split(", ") if host]
-# ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", default="0.0.0.0").split(", ")
+ALLOWED_HOSTS = [host.strip() for host in getenv("DJANGO_ALLOWED_HOSTS", default="127.0.0.1").split(", ") if host]
 
 # Application definition
 DJANGO_APPS = [
@@ -110,10 +111,10 @@ DATABASES = {
     "default": {
         "ENGINE": getenv("POSTGRES_ENGINE"),
         "HOST": getenv("POSTGRES_HOST"),
+        "PORT": getenv("POSTGRES_PORT"),
         "NAME": getenv("POSTGRES_DB"),
         "USER": getenv("POSTGRES_USER"),
         "PASSWORD": getenv("POSTGRES_PASSWORD"),
-        "PORT": getenv("POSTGRES_PORT"),
     }
 }
 
@@ -162,17 +163,17 @@ STATIC_URL = "/static/"
 
 # STATICFILES_DIRS = [ROOT_DIR / "src/static"]
 
-# STATIC_ROOT = ROOT_DIR / "src/staticfiles"
+STATIC_ROOT = ROOT_DIR / "support_an/staticfiles"
 
 MEDIA_URL = "/media/"
 
 # MEDIA_ROOT = ROOT_DIR / "src/media"
 
+SITE_ID = 1
 
 # email
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-SITE_ID = 1
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 # EMAIL_HOST = getenv("EMAIL_HOST")
 # EMAIL_PORT = getenv("EMAIL_PORT")
