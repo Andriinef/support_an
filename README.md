@@ -1,151 +1,212 @@
-# Support service application
+# The deployment process is site DigitalOcean
 
-## Adjust the application
+Щоб розгорнути сервер на DigitalOcean, виконайте такі кроки:
 
-### Install deps
+1. Створіть обліковий запис DigitalOcean, якщо цього ще не зробили.
+2. Після входу в свій обліковий запис DigitalOcean, натисніть кнопку "Create" (Створити) у верхній частині екрана і виберіть "Droplets" (Віртуальні машини).
+3. Виберіть операційну систему, яку потрібно використовувати, і план сервера. У цьому кроці також можна налаштувати інші параметри, такі як кількість процесорів, обсяг оперативної пам'яті та місце на жорсткому диску.
+4. Виберіть регіон сервера, в якому буде розгорнутий сервер.
+5. Виберіть опцію "SSH Keys" (Ключі SSH) і додайте свій відкритий ключ SSH, щоб мати можливість підключатися до сервера через SSH без використання пароля.
+Якщо у вас немає "SSH Keys" чи ви бажаєте створити новий, то (для Ubuntu):
+    - Відкрийте термінал
+    - Введіть команду
 
-```bash
-# Install pipenv
-# https://pipenv.pypa.io/en/latest/
-pip install pipenv
+    ```code
+    ssh-keygen -t rsa -b 4096 -C "hillel@gmail.com"
+    ```
+
+    де -C "hillel@gmail.com": додає коментар до ключа. Коментар допомагає ідентифікувати ключ і зазвичай визначається ім'ям користувача або адресою електронної пошти.
+    - Коли ви побачите запит "Enter file in which to save the key" (Введіть ім'я файлу, до якого потрібно зберегти ключ) наприклад: hillel
+6. Натисніть кнопку "Створити" внизу сторінки, щоб створити сервер.
+7. Після створення сервера ви отримаєте інформацію про його IP-адресу та інші подробиці. Ви можете підключитися до сервера SSH, використовуючи свій локальний термінал і ключ SSH.
+
+Це базовий процес розгортання сервера DigitalOcean. Далі ви можете встановити та налаштувати будь-яке ПЗ, яке вам необхідне для вашого проекту.
+
+## Підключення до "Droplets" (Віртуальні машини) через термінал на локальному комп'ютері
+
+Щоб підключитися до свого Droplet (віртуальної машини) на DigitalOcean через термінал, виконайте такі кроки:
+
+1. Відкрийте термінал на локальному комп'ютері.
+2. Використовуючи команду ssh, підключіться до Droplet, використовуючи IP-адресу або ім'я хоста сервера, а також ім'я користувача. Наприклад:
+
+    ```code
+    ssh root@46.93.137.131
+    ```
+
+3. Для спрощення підключення до сервера можливо сконфігурувати SSH config
+
+    ```https
+    https://www.ssh.com/academy/ssh/config
+    ```
+
+    наприклад:
+
+    ```code
+    # =========
+    # [Hillel]
+    # =========
+    Host hillel
+        HostName 46.93.137.131
+        Port 22
+        User root
+        IdentityFily ~/.ssh/hillel
+    ```
+
+    Команда підключення до сервера:
+
+    ```code
+    .ssh hillel
+    ```
+
+## Встановлення та використання Docker та Docker-compose в Ubuntu 22.04
+
+Дотримуйтесь цих кроків вказанних на сайті DigitalOcean:
+
+```https
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-22-04
+
+https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-22-04
 ```
 
-### Activate the environment
+## Клонування готового проекта до Droplet (віртуальної машини) з GitHab
 
-```bash
-# Activate virtual env
-pipenv shell
-```
+Щоб клонувати готовий проект з GitHub до свого Droplet, Вам необхідно виконати наступні кроки:
 
-```bash
-# Regenerate Pipfile.lock file
-pipenv lock
-```
+1. Встановіть Git на Droplet, якщо він не встановлений. Для цього виконайте наступну команду в терміналі:
 
-```bash
-# pipenv lock & pipenv sync
-pipenv update
-```
+    ```code
+    sudo apt-get update
+    sudo apt-get install git
+    ```
 
-```bash
-# pipenv sync
-pipenv sync --dev
-```
+2. Створіть нову пару "SSH Keys" для GitHab командою:
 
-### Code quality tools
+    ```code
+    ssh-keygen -t rsa -b 4096 -C "git@gmail.com"
+    ```
 
-```bash
-# https://pypi.org/project/flake8/
-flake8
+    Програма ssh-keygen запуститься і попросить ввести шлях для збереження ключа. Залиште це поле порожнім, якщо ви хочете зберегти ключ у стандартному місці, а потім натисніть клавішу Enter.
 
-# https://pypi.org/project/black/
-black
+3. За допомогою команди:
 
-# https://pypi.org/project/isort/
-isort
-```
+    ```code
+    cat id_rsa.pub
+    ```
 
-### Install framework
+    відкирийте файл id_rsa.pub з "SSH Keys" та зкопіюйте його.
 
-```bash
-# https://pypi.org/project/Django/
-Django
-```
+4. Перейдіть до налаштувань GitHab та додайте "SSH Keys"
 
-### Install additional packages
+    ```markdown
+    https://github.com/settings/keys
+    ```
 
-```bash
-# https://pypi.org/project/psycopg-binary/
-psycopg2-binary
+5. Клонуйте Git SSH командою:
 
-# https://pypi.org/project/Pillow/
-Pillow
+    ```code
+    git clone git@github.com:Andriinef/support_an.git
+    ```
 
-# https://pypi.org/project/django-debug-toolbar/
-django-debug-toolbar
+6. Команда:
 
-# https://pypi.org/project/django-ckeditor/
-django-ckeditor
+    ```code
+    ls -lа
+    ```
 
-# https://pypi.org/project/python-dotenv/
-python-dotenv
-```
+    покаже всі клоновані та сховані файли з GitHub на вашій Droplet (віртуальної машини).
 
-## Creates a Django project
+7. Копіюєм дані з файлу .env.default до .env файлу командою:
 
-Create a folder src.
-Creates a Django project directory structure for the given project name in the current directory or the given destination.
+    ```code
+    cp .env.default .env
+    ```
 
-```bash
-# https://docs.djangoproject.com/en/4.1/ref/django-admin/
-django-admin startproject config src/
-```
+8. У подальшому при зміні файлів на GitHub, зміни на Droplet (віртуальної машини) виконуються командою:
 
-```bash
-scr/
-    config/
-        manage.py
-        mysite/
-            __init__.py
-            settings.py
-            urls.py
-            asgi.py
-            wsgi.py
-```
+    ```code
+    git pull
+    ```
 
-### The development server
+## Перший запуск проекту на  Droplet (віртуальної машини)
 
-Run the following commands:
+Щоб запустити проект на Droplet (віртуальної машини) за допомогою команд docker-compose виконайте наступні кроки:
 
-```bash
-python src/manage.py runserver
-```
+1. Збираєм образи docker з вказаного файлу "docker-compose.yml" командою:
 
-## Creates a Django apps
+    ```code
+    docker-compose build
+    ```
 
-Creates a Django apps
+2. Запустіть свій проект за допомогою команди:
 
-```bash
-django-admin startapp exchange_rates
-```
+    ```code
+    docker-compose up -d
+    ```
 
-Open up config/settings.py
+3. При потребі виконайте міграцію бази даних, використовуючи команду:
 
-```bash
-INSTALLED_APPS = [
-"django.contrib.admin",
-"django.contrib.auth",
-"django.contrib.contenttypes",
-"django.contrib.sessions",
-"django.contrib.messages",
-"django.contrib.staticfiles",
-# Local
-"exchange_rates.apps.ExchangeRatesConfig", # new
-]
-```
+    ```code
+    docker-compose exec app python src/manage.py migrate
+    ```
 
-## Workflow
+4. Зареєструйте admin для проекту командою:
 
-Django can create migrations for you. Make changes to your models - say, add a field and remove a model - and then run makemigrations:
+    ```code
+    docsup='docker-compose exec app python src/manage.py createsuperuser'
+    ```
 
-``` python
-python manage.py makemigrations
-```
+5. Для збору статичних файлів у проекті використовують команду:
 
-Once you have your new migration files, you should apply them to your database to make sure they work as expected:
+    ```code
+    docker-compose exec app python src/manage.py collectstatic createsuperuser'
+    ```
 
-``` python
-python manage.py migrate
-```
+## Перевірка роботи проекта
 
-Set the STATIC_ROOT setting to the directory from which you’d like to serve these files, for example:
+Для перевірки роботи проекта на Droplet (віртуальної машини) виконайте наступні кроки:
 
-``` python
-STATIC_ROOT = ROOT_DIR / "support_an/staticfiles"
-```
+1. Встановіть програму "Net-tools" якщо вона не була встановлена раніше. Цей набір утиліт для мережевого адміністрування в ОС Linux, який містить різні інструменти для налаштування та моніторингу мережі.
 
-Run the collectstatic management command:
+    ```code
+    apt-get install net-tools
+    ```
 
-```python
-python src/manage.py collectstatic
-```
+2. Введіть для відображення інформації про мережеві інтерфейси в системі, такі як IP-адреса, маска мережі, MAC-адреса тощо:
+
+    ```code
+    ifconfig
+    ```
+
+3. Ось приклад виконання команди ifconfig у терміналі Linux:
+
+    ```yaml
+    eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.10.5  netmask 255.255.255.0  broadcast 192.168.10.255
+        inet6 fe80::20c:29ff:fe2f:8b08  prefixlen 64  scopeid 0x20<link>
+        ether 00:0c:29:2f:8b:08  txqueuelen 1000  (Ethernet)
+        RX packets 19541  bytes 30743721 (29.3 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 10212  bytes 1225488 (1.1 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+    lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 1095  bytes 186284 (181.9 KiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1095  bytes 186284 (181.9 KiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+    ```
+
+    В нашому випадку нам потрібен "eth0", у якому вказана потрібна нам адреса "192.168.10.5"
+
+4. Відкрийте будь який браузер, наприклад "Google Chrome" та введіть отриманну адресу з додаванням порта ":8000" наприклад:
+
+    ```http
+    http://192.168.10.5:8000
+    ```
+
+    Ви побачите першу сторінку проекта.
+
+### END

@@ -9,7 +9,7 @@ LOGIN_REDIRECT_URL = "tickets_tickets"  # Log In
 LOGOUT_REDIRECT_URL = "tickets_tickets"  # Log Out
 
 # Build paths inside the project like this: ROOT_DIR / "subdir".
-SRC_DIR = Path(__file__).resolve().parent.parent
+SRC_DIR = Path(__file__).resolve().parent.parent.parent
 ROOT_DIR = SRC_DIR.parent
 
 
@@ -108,12 +108,12 @@ DATABASES = {
     #     "NAME": ROOT_DIR / "db.sqlite3",
     # }
     "default": {
-        "ENGINE": getenv("POSTGRES_ENGINE"),
-        "HOST": getenv("POSTGRES_HOST"),
+        "ENGINE": getenv("DB_ENGINE"),
+        "HOST": getenv("DB_HOST"),
         "PORT": getenv("POSTGRES_PORT"),
-        "NAME": getenv("POSTGRES_DB"),
-        "USER": getenv("POSTGRES_USER"),
-        "PASSWORD": getenv("POSTGRES_PASSWORD"),
+        "NAME": getenv("DB_DB"),
+        "USER": getenv("DB_USER"),
+        "PASSWORD": getenv("DB_PASSWORD"),
     }
 }
 
