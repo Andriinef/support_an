@@ -36,6 +36,8 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt",
     "drf_yasg",
 ]
 
@@ -55,8 +57,6 @@ LOCAL_APPS = [
 
 REST_FRAMEWORK_AUTHENTICATION = [
     "django.contrib.sites",
-    "rest_framework.authtoken",
-    "rest_framework_simplejwt",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",

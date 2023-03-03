@@ -38,9 +38,7 @@ plugins = [
 ]
 mypy_path = 'src'
 exclude = [
-    'trash',
-    'migrations',
-    'yasg',
+    'openapi',
     'Examples',
     'src/customusers/models',
 ]

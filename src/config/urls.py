@@ -3,14 +3,14 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.static import serve
 
-from .yasg import urlpatterns as yasg_urls
+from .openapi import urlpatterns as openapi_urls
 
 # from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("exchange-rates/", include("exchange_rates.urls"), name="exchange-rates"),
+    path("exchange-rates/", include("exchange_rates.urls")),
     path("api-auth/", include("rest_framework.urls")),  # auth
     path("", include("core.urls"), name="core"),
     path("static/<path:path>", serve, {"document_root": settings.STATIC_ROOT}),
@@ -19,7 +19,7 @@ urlpatterns = [
     # path("dj-rest-auth/registration/",               # auth
     #      include("dj_rest_auth.registration.urls")),
     # path("djoser-auth/", include("djoser.urls")),
-] + yasg_urls
+] + openapi_urls
 
 # if settings.DEBUG:
 #     urlpatterns += staticfiles_urlpatterns()
