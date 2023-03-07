@@ -41,7 +41,6 @@ THIRD_PARTY_APPS = [
     "drf_yasg",
 ]
 
-
 LOCAL_APPS = [
     # "accounts.apps.AccountsConfig",
     # "repairs.apps.RepairsConfig",
@@ -66,6 +65,8 @@ REST_FRAMEWORK_AUTHENTICATION = [
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS + REST_FRAMEWORK_AUTHENTICATION
+
+CELERY_BROKER_URL = getenv("REDIS_URL", default="redis://redis:6379/0")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

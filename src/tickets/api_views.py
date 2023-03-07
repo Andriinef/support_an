@@ -18,6 +18,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from config.celery import hello_task
 from shared.permissions import PermissionsMixin
 from shared.serializers import ResponseMultiSerializer, ResponseSerializer
 from tickets.models import Ticket
@@ -67,6 +68,10 @@ class TicketAPISet(PermissionsMixin, ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def list(self, request, *args, **kwargs) -> Response:
+
+        # This task bloks I/O
+        hello_task.delay()
+
         # if request.user.role == Role.ADMIN:
         #     queryset = self.get_queryset()
         # elif request.user.role == Role.MANAGER:

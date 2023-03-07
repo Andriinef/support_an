@@ -1,74 +1,243 @@
-# Setting up a Django API with Pipenv, Docker, and Amazon SQS
+# Support service application
 
-This repository contains the code and configuration files to set up a Django API server using Pipenv, Docker, Docker Compose, Gunicorn, and Celery running on Amazon SQS.
+## Adjust the application
 
-## Prerequisites
+### Install deps
 
-Before you begin, make sure you have the following installed:
+```bash
+# Install pipenv
+# https://pipenv.pypa.io/en/latest/
+pip install pipenv
+```
 
-* Docker
+### Activate the environment
 
-    ```html
-    https://docs.docker.com/engine/install/
-    ```
+```bash
+# Activate virtual env
+pipenv shell
+```
 
-* Docker Compose
+```bash
+# Regenerate Pipfile.lock file
+pipenv lock
+```
 
-    ```html
-    https://docs.docker.com/compose/install/
-    ```
+```bash
+# pipenv lock & pipenv sync
+pipenv update
+```
 
-* Pipenv
+```bash
+# pipenv sync
+pipenv sync --dev
+```
 
-    ```html
-    https://pipenv.pypa.io/en/latest/install/
-    ```
+### Code quality tools
 
-* An Amazon Web Services (AWS) account with permissions to create an Amazon SQS queue and access keys with the appropriate permissions.
+```bash
+# https://pypi.org/project/flake8/
+flake8
 
-## Getting Started
+# https://pypi.org/project/black/
+black
 
-1. Clone this repository to your local machine.
+# https://pypi.org/project/isort/
+isort
+```
+
+### Install framework
+
+```bash
+# https://pypi.org/project/Django/
+Django
+```
+
+### Install additional packages
+
+```bash
+# https://pypi.org/project/psycopg-binary/
+psycopg2-binary
+
+# https://pypi.org/project/Pillow/
+Pillow
+
+# https://pypi.org/project/django-debug-toolbar/
+django-debug-toolbar
+
+# https://pypi.org/project/django-ckeditor/
+django-ckeditor
+
+# https://pypi.org/project/python-dotenv/
+python-dotenv
+```
+
+## Creates a Django project
+
+Create a folder src.
+Creates a Django project directory structure for the given project name in the current directory or the given destination.
+
+```bash
+# https://docs.djangoproject.com/en/4.1/ref/django-admin/
+django-admin startproject config src/
+```
+
+```bash
+scr/
+    config/
+        manage.py
+        mysite/
+            __init__.py
+            settings.py
+            urls.py
+            asgi.py
+            wsgi.py
+```
+
+### The development server
+
+Run the following commands:
+
+```bash
+python src/manage.py runserver
+```
+
+## Creates a Django apps
+
+Creates a Django apps
+
+```bash
+django-admin startapp exchange_rates
+```
+
+Open up config/settings.py
+
+```bash
+INSTALLED_APPS = [
+"django.contrib.admin",
+"django.contrib.auth",
+"django.contrib.contenttypes",
+"django.contrib.sessions",
+"django.contrib.messages",
+"django.contrib.staticfiles",
+# Local
+"exchange_rates.apps.ExchangeRatesConfig", # new
+]
+```
+
+## Workflow
+
+Django can create migrations for you. Make changes to your models - say, add a field and remove a model - and then run makemigrations:
+
+``` python
+python src/manage.py makemigrations
+```
+
+Once you have your new migration files, you should apply them to your database to make sure they work as expected:
+
+``` python
+python src/manage.py migrate
+```
+
+Set the STATIC_ROOT setting to the directory from which you’d like to serve these files, for example:
+
+``` python
+STATIC_ROOT = ROOT_DIR / "support_an/staticfiles"
+```
+
+Run the collectstatic management command:
+
+```python
+python src/manage.py collectstatic
+```
+
+## Celery and Redis
+
+Here's an example of how to use Celery in a Django API:
+
+1. Install Celery and Redis: You can install Celery using Pipenv by running the following command in your project directory:
 
     ```code
-    git clone git@github.com:Andriinef/support_an.git
+    pipenv install celery redis
     ```
 
-2. Change into the project directory.
+2. Create a Celery app: Create a new file named celery.py in your project directory with the following contents:
 
-    ```code
-    cd support_an
+    ``` python
+    import os
+    from time import sleep
+
+    from celery import Celery
+
+    # Set the default Django settings module for the 'celery' program.
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+
+    celery_app = Celery('config')
+
+    # Using a string here means the worker doesn't have to serialize
+    # the configuration object to child processes.
+    # - namespace='CELERY' means all celery-related configuration keys
+    #   should have a 'CELERY_' prefix.
+    celery_app.config_from_object('django.conf:settings', namespace='CELERY')
+
+    # Load task modules from all registered Django app configs.
+    celery_app.autodiscover_tasks()
+
+    @celery_app.task(bind=True)
+    def debug_task(self):
+        sleep(7)
+        print(f'Request: {self.request!r}')
     ```
 
-3. Install the project dependencies using Pipenv.
-
-    ```code
-    pipenv install
-    ```
-
-4. Copy the .env.default file and rename it to .env.
-
-    ```code
-    cp .env.default .env
-    ```
-
-5. Edit the .env file and add your AWS access keys and the name of the SQS queue you want to use. Make sure to also set the DJANGO_SETTINGS_MODULE environment variable to the correct settings file (config.settings.local or config.settings.production).
+3. Create a new file named __init__.py in your project directory with the following contents:
 
     ```python
-    AWS_ACCESS_KEY_ID=your_aws_access_key_id
-    AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
-    AWS_SQS_QUEUE_NAME=your_queue_name
-    DJANGO_SETTINGS_MODULE=config.settings.local
+    from config.celery import celery_app
+
+    __all__ = ("celery_app",)
     ```
 
-6. Run the Docker Compose command to start the Django API server, Gunicorn, and Celery worker.
+4. Configure Django to use Redis: In your Django project's settings.py file, add the following lines to configure Django to use Redis as the message broker and result backend for Celery:
+
+    ```python
+    CELERY_BROKER_URL = 'redis://redis:6379/0'
+    ```
+
+5. Create a docker-compose.yml file: Create a new file named docker-compose.yml in your project directory with the following contents:
 
     ```code
-    docker-compose up -d --build
+    services:
+        redis:
+        image: redis
+        container_name: "support_redis"
+        ports:
+            - "6379:6379"
     ```
 
-7. You should now be able to access the API at "http://0.0.0.0:8000."
+6. Use the task in your views: In one of your Django views, import the Celery task and call it using the delay method. For example:
 
-## Deployment
+    ```python
+     def list(self, request, *args, **kwargs) -> Response:
 
-To deploy the API to a production environment, follow the steps described in the file README_DEPLOY.md
+        # This task bloks I/O
+        hello_task.delay()
+
+        if request.user.role == Role.ADMIN:
+            queryset = self.get_queryset()
+        elif request.user.role == Role.MANAGER:
+            queryset = Ticket.objects.filter(manager=request.user)
+        else:
+            queryset = Ticket.objects.filter(customer=request.user)
+
+        serializer = TicketLightSerializer(queryset, many=True)
+        response = ResponseMultiSerializer({"results": serializer.data})
+
+        return Response(response.data)
+    ```
+
+7. Start the Celery worker: In a separate terminal window, start the Celery worker by running the following command in your project directory:
+
+    ```code
+    celery -A myproject worker -l info
+    ```
+
+    This command starts the Celery worker, which will process any tasks that you call using the delay method.

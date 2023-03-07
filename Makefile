@@ -53,6 +53,9 @@ reload:
 gun:
 	gunicorn src.config.wsgi:application --bind
 
+celery:
+	celery -A config worker -l INFO
+
 # cq == Code Quality
 cq:
 	flake8 ./ && black ./ && isort ./ && mypy ./
